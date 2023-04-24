@@ -6,6 +6,7 @@ contract Lottery {
 
     address public manager;
     address payable[] public players;
+    address public lastwinner;
 
     constructor() {
         manager = payable(msg.sender);
@@ -28,7 +29,10 @@ contract Lottery {
     function pickWinner() public restricted {
         uint index = random() % players.length;
         players[index].transfer(address(this).balance);
+        lastwinner = players[index];
         players = new address payable[](0);
+        
+        
     }
 
     function getPlayers() public view returns(address payable[] memory){
